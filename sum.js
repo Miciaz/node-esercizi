@@ -1,0 +1,1 @@
+console.log(`La somma di 5 + 6 è ${5 + 6}`)
