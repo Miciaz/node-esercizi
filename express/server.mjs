@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 import express from "express";
+import joi from 'joi'
 
 dotenv.config();
 
@@ -19,13 +20,19 @@ let planets = [
   { id: 8, name: "Neptune" },
 ];
 
-app.get("/", (req, res) => {
-  res.send("Hello world");
-});
+const planetSchema = Joi.object({
+    id: Joi.number().integer().required(),
+    name: Joi.string().required()
+})
 
 app.get("/planets", (req, res) => {
   res.status(200).json(planets);
 });
+
+app.get('planets/:id', (req, res) => {
+    const {id} = req.params
+    const planet = 
+})
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
