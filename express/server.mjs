@@ -20,18 +20,44 @@ let planets = [
   { id: 8, name: "Neptune" },
 ];
 
-const planetSchema = Joi.object({
-    id: Joi.number().integer().required(),
-    name: Joi.string().required()
+const planetSchema = joi.object({
+    id: joi.number().integer().required(),
+    name: joi.string().required()
 })
 
 app.get("/planets", (req, res) => {
   res.status(200).json(planets);
 });
 
-app.get('planets/:id', (req, res) => {
+app.get('/planets/:id', (req, res) => {
     const {id} = req.params
-    const planet = 
+    const planet = planets.find(el => el.id === Number(id))
+
+    res.status(200).json(planet)
+})
+
+app.post('/planets', (req, res) => {
+  const {id, name} = req.body
+  const newPlanet = {id , name}
+  planets = [...planets, newPlanet]
+
+  res.status(201).json({msg:'new planet created'})
+})
+
+app.put('/planets/:id', (req,res) => {
+  const {id} = req.params
+  const {name} = req.body
+  planets = planets.map(p => p.id === Number(id) ? ({...p, name}) : p)
+
+  console.log(planets)
+  res.status(200).json({msg: 'planet modified'})
+})
+
+app.delete('/planets/:id', (req, res) => {
+  const {id} = req.body
+  planets = planets.filter(p => p.id !== Number(id))
+
+  res.status(200).json({msg:'planet deleted'})
 })
 
 app.listen(port, () => {
